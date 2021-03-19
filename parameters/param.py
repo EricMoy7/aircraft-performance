@@ -24,7 +24,7 @@ class Discipline:
         
 
 aero = {
-    'S_ref': 179,
+    'S_ref': 250,
     'Span': 45,
     'Taper': 0.66,
     'Avg_Chord': 6.25,
@@ -32,23 +32,23 @@ aero = {
     'MAC': 6.33,
     'AR': 8.1,
     'e': 0.8,
-    'S_wet': 549,
+    'S_wet': 1360,
     'cdo': 0,
-    "K": .06071,
+    "K": .06,
     'Excr': 1.1,
-    'Ord_Drag': .03,
+    'Ord_Drag': .01,
     }
 
 mass = {
-    'Wfuel': 1687.52,
+    'Wfuel': 1850,
     'Wpayload': 3000,
-    'Wempty': 6929,
+    'Wempty': 8000,
     'MTOW': 12117,
 }
 
 prop = {
     'ESHP_FL000': 1600,
-    'ESHP_FL300': 750,
+    'ESHP_FL300': 600,
     'n': 0.8,
     'ESFC_FL000': .585,
 }
