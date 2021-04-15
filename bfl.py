@@ -1,6 +1,6 @@
 import numpy as np
 
-bhp = 750
+bhp = 2400
 rho = .0024
 rho_sl = .0024
 N_e = 2
@@ -11,7 +11,7 @@ weight = 13008
 s_ref = 250
 g = 32.2
 Cl = 2
-Cl_max = 2.1
+Cl_max = 2
 
 
 

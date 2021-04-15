@@ -36,20 +36,20 @@ aero = {
     'cdo': 0,
     "K": .06,
     'Excr': 1.1,
-    'Ord_Drag': .01,
+    'Ord_Drag': .003,
     }
 
 mass = {
-    'Wfuel': 1850,
+    'Wfuel': 2200,
     'Wpayload': 3000,
     'Wempty': 8000,
-    'MTOW': 12117,
+    'MTOW': 13000,
 }
 
 prop = {
     'ESHP_FL000': 1600,
-    'ESHP_FL300': 600,
-    'n': 0.8,
+    'ESHP_FL300': 400,
+    'n': 0.9,
     'ESFC_FL000': .585,
 }
 

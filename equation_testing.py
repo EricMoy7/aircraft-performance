@@ -1,8 +1,8 @@
 import numpy as np
 
-W = 56000
-SREF = 179
-CLMAX = 2.4
+W = 13000
+SREF = 200
+CLMAX = 2
 p = .002377
 
 V_stall = np.sqrt(W/(.5*p*SREF*CLMAX))

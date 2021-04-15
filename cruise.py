@@ -3,6 +3,7 @@ import pickle
 from parameters.param import Discipline
 import inspect
 import matplotlib.pyplot as plt
+from multiprocessing import Pool
 
 load = Discipline('rb')
 new = load.get()
@@ -100,7 +101,7 @@ class coefficients():
         return self.CL
 
     def fCD(self):
-        self.CD = self.fcdo() + self.fCL()**2/(np.pi*aero["AR"]*aero["e"]) + aero["Ord_Drag"]
+        self.CD = self.fcdo() + self.fCL()**2/(np.pi*aero["AR"]*aero["e"]) + aero["Ord_Drag"] -.005
         return self.CD
     
     def fLD(self):
@@ -145,20 +146,13 @@ class power():
         return self.power_reqhp
     
     def fpower_availhp(self):
-        self.power_availhp = prop["ESHP_FL000"] - (prop["ESHP_FL000"]-prop["ESHP_FL300"])/30000*self.altitude
+        self.power_availhp = prop["ESHP_FL000"] - (prop["ESHP_FL000"]-prop["ESHP_FL300"])/30000*self.altitude + ((self.SPE.fKTAS()-50)*1.4)
         return self.power_availhp
 
     def fpower_avail(self):
         self.power_avail = self.fpower_availhp()*550
         return self.power_avail
 
-
-
-x = coefficients(110,15000, 13061)
-public_method_names = [method for method in dir(x) if callable(getattr(x, method)) if not method.startswith('_')] 
-for method in public_method_names:
-    getattr(x, method)()  # call
-print(vars(x))
 
 # x = speed(110,15000)
 # public_method_names = [method for method in dir(x) if callable(getattr(x, method)) if not method.startswith('_')] 
@@ -180,14 +174,14 @@ print(vars(x))
 #     print(coef.weight)
 
 
-
+#======Endurance/Range Diagrams==============================================================
 # velocity = np.linspace(0,300,100)
 # ld_array = []
 # ld1_array = []
 # ld2_array = []
 # for v in velocity:
-#     coef = coefficients(v,15000, 13061)
-#     cl = coef.fCL()
+#     coef = coefficients(v,12000, 12000)
+#     cl = coef.fCL() 
 #     cd = coef.fCD()
 #     ld = cl/cd
 #     ld1 = cl**(1/2)/cd
@@ -196,6 +190,7 @@ print(vars(x))
 #     ld_array.append(ld)
 #     ld1_array.append(ld1)
 #     ld2_array.append(ld2)
+#     print((v, ld2))
 
 # plt.plot(velocity, ld_array)
 # plt.plot(velocity, ld1_array)
@@ -204,6 +199,7 @@ print(vars(x))
 # plt.xlabel("Velocity (kts)")
 # plt.ylabel("Coefficients")
 # plt.show()
+
 
 #================================================================================================
 # coef = coefficients(150 , 15000, 12117)
@@ -222,54 +218,33 @@ print(vars(x))
 # plt.plot(vs_array, altitude)
 # plt.show()
 #================================================================================================
-drag_red = 900
-max_pow = 1134
-pow_a = []
-pow_b = []
-v = np.linspace(50,350,150)
-KTAS = []
-for vel in v:
-    POW = power(vel, 10000, 13000)
-    COEF = coefficients(vel, 10000, 13000)
-    pow_a.append(POW.fpower_reqhp(COEF.fD()))
+def f(v):
+    alt = 1
+    excess = [1,10]
+    alts = []
+    for ex in excess:
+        while alt < 35000:
+            p = power(v,alt, weight)
+            req = p.fpower_reqhp()
+            avail = p.fpower_availhp()
+            op = req-avail
+            if int(op) == ex  and op >= 0:
+                alts.append(alt)
+                break
+            else:
+                alt += 1
+    return alts
 
-    pow_b.append(POW.fpower_reqhp(COEF.fD()-drag_red))
+weight = 13000
+points = 200
+velocity = np.linspace(20,391,points)
 
-    SP = speed(vel, 10000)
-    KTAS.append(SP.fKTAS())
+# for v in velocity:
+#     alt_array.append(alt)
 
-
-plt.plot(KTAS, pow_a)
-plt.plot(KTAS, pow_b)
-plt.hlines(max_pow,50,400,color='red')
-plt.text(75,1300, "Max Engine Power (1134 hp) @ 12,000ft")
-
-idx1 = np.argwhere(np.diff(np.sign(pow_a[20:] - np.ones_like(pow_a[20:])*max_pow))).flatten()
-idx2 = np.argwhere(np.diff(np.sign(pow_b[20:] - np.ones_like(pow_b[20:])*max_pow))).flatten()
-idx1 = idx1+20
-idx2 = idx2+20
-
-plt.vlines(KTAS[idx1[0]], 0 ,max_pow, linestyles='dashed')
-plt.vlines(KTAS[idx2[0]], 0 ,max_pow, linestyles='dashed',color="orange")
-
-#Vert line text
-plt.text(KTAS[idx1[0]]-10, max_pow*.1, f'Current', rotation=90)
-plt.text(KTAS[idx1[0]]+2, max_pow*.1, f'{str(KTAS[idx1[0]])[:6]}kn', rotation=90)
-
-plt.text(KTAS[idx2[0]]-10, max_pow*.1, f'Minimum', rotation=90)
-plt.text(KTAS[idx2[0]]+2, max_pow*.1, f'{str(KTAS[idx2[0]])[:6]}kn', rotation=90)
-
-plt.legend(["Current",f"Minimum Required (-{drag_red}LB Drag)"])
-plt.ylim(0,3000)
-plt.ylabel("Power (hp)")
-
-axes1 = plt.gca()
-axes2 = axes1.twiny()
-
-axes2.set_xticks(range(43,344,25))
-axes2.set_xlim(42.96729763, 343.7383811)
-axes1.set_xlim(50,400)
-
-axes1.set_xlabel("KTAS")
-axes2.set_xlabel("KCAS")
-plt.show()
+if __name__ == '__main__':
+    with Pool(16) as p:
+        alt_array= p.map(f,velocity)
+        plt.plot(velocity, alt_array)
+        plt.show()
+    

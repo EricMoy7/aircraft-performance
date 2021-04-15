@@ -5,9 +5,9 @@ def range_eq(W_f):
     R = 550*n_p*LD / .585*(np.log(1 + W_f/(W_p+W)))
     return R
 
-n_p = .85
+n_p = .9
 LD = 13.4
-V = 314
+V = 330
 SFC = .585
 
 W_f = np.linspace(1600,2200, 5)

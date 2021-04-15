@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 W = 13154
-SREF = 179
+SREF = 250
 CLMAX = 2.1
 p = .002377
 
