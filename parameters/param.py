@@ -48,7 +48,7 @@ mass = {
 
 prop = {
     'ESHP_FL000': 1600,
-    'ESHP_FL300': 400,
+    'ESHP_FL300': 800,
     'n': 0.9,
     'ESFC_FL000': .585,
 }

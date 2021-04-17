@@ -4,6 +4,7 @@ from parameters.param import Discipline
 import inspect
 import matplotlib.pyplot as plt
 from multiprocessing import Pool
+import math
 
 load = Discipline('rb')
 new = load.get()
@@ -59,9 +60,13 @@ class speed():
         self.VTAS = 1.687809857 * self.fKTAS()
         return self.VTAS
 
-    def fMach(self):
-        self.Mach = self.fVTAS()/np.sqrt(1716*cond["y"]* self.CON.fTemp())
+    def fMach(self, speed = None):
+        if speed == None:
+            self.Mach = self.fVTAS()/np.sqrt(1716*cond["y"]* self.CON.fTemp())
+        else:
+            self.Mach = speed/np.sqrt(1716*cond["y"]* self.CON.fTemp())
         return self.Mach
+
 
 class coefficients():
     def __init__(self, KCAS, altitude, weight):
@@ -101,7 +106,7 @@ class coefficients():
         return self.CL
 
     def fCD(self):
-        self.CD = self.fcdo() + self.fCL()**2/(np.pi*aero["AR"]*aero["e"]) + aero["Ord_Drag"] -.005
+        self.CD = self.fcdo() + self.fCL()**2/(np.pi*aero["AR"]*aero["e"]) + aero["Ord_Drag"]
         return self.CD
     
     def fLD(self):
@@ -147,6 +152,8 @@ class power():
     
     def fpower_availhp(self):
         self.power_availhp = prop["ESHP_FL000"] - (prop["ESHP_FL000"]-prop["ESHP_FL300"])/30000*self.altitude + ((self.SPE.fKTAS()-50)*1.4)
+        if self.power_availhp > prop["ESHP_FL000"]:
+            return prop["ESHP_FL000"]
         return self.power_availhp
 
     def fpower_avail(self):
@@ -218,33 +225,4 @@ class power():
 # plt.plot(vs_array, altitude)
 # plt.show()
 #================================================================================================
-def f(v):
-    alt = 1
-    excess = [1,10]
-    alts = []
-    for ex in excess:
-        while alt < 35000:
-            p = power(v,alt, weight)
-            req = p.fpower_reqhp()
-            avail = p.fpower_availhp()
-            op = req-avail
-            if int(op) == ex  and op >= 0:
-                alts.append(alt)
-                break
-            else:
-                alt += 1
-    return alts
-
-weight = 13000
-points = 200
-velocity = np.linspace(20,391,points)
-
-# for v in velocity:
-#     alt_array.append(alt)
-
-if __name__ == '__main__':
-    with Pool(16) as p:
-        alt_array= p.map(f,velocity)
-        plt.plot(velocity, alt_array)
-        plt.show()
     
