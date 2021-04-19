@@ -181,31 +181,7 @@ class power():
 #     print(coef.weight)
 
 
-#======Endurance/Range Diagrams==============================================================
-# velocity = np.linspace(0,300,100)
-# ld_array = []
-# ld1_array = []
-# ld2_array = []
-# for v in velocity:
-#     coef = coefficients(v,12000, 12000)
-#     cl = coef.fCL() 
-#     cd = coef.fCD()
-#     ld = cl/cd
-#     ld1 = cl**(1/2)/cd
-#     ld2 = cl**(3/2)/cd
-
-#     ld_array.append(ld)
-#     ld1_array.append(ld1)
-#     ld2_array.append(ld2)
-#     print((v, ld2))
-
-# plt.plot(velocity, ld_array)
-# plt.plot(velocity, ld1_array)
-# plt.plot(velocity, ld2_array)
-# plt.legend([r"$\frac{cl}{cd}$", r"$\frac{cl^\frac{1}{2}}{cd}$",r"$\frac{cl^\frac{3}{2}}{cd}$"])
-# plt.xlabel("Velocity (kts)")
-# plt.ylabel("Coefficients")
-# plt.show()
+#======Endurance/Range Diagrams=============================================================
 
 
 #================================================================================================

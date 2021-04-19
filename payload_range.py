@@ -27,11 +27,11 @@ plt.vlines(range_eq(W_f,W_p),0,W_p, linestyle='--', color='Blue')
 plt.vlines(range_eq(W_f,W_p*.6)*f,0,W_p*.6, linestyle='--', color='Orange')
 
 
-plt.text(10,W_p-150,'Max Payload Weight')
+plt.text(10,W_p+40,'Max Payload Weight')
 plt.text(p2x[0]+20, p2y[0]+20, 'Ferry Mission (60%)', rotation=np.degrees(np.arctan((p2y[0]-p2y[1])/(p2x[0]-p2x[1]))), rotation_mode='anchor',transform_rotates_text=True)
-plt.text(p3x[0]+20, p3y[0]+20, 'No Payload', rotation=np.degrees(np.arctan((p3y[0]-p3y[1])/(p3x[0]-p3x[1]))), rotation_mode='anchor',transform_rotates_text=True)
+plt.text(p3x[0]+20, p3y[0]+20, 'Zero Payload', rotation=np.degrees(np.arctan((p3y[0]-p3y[1])/(p3x[0]-p3x[1]))), rotation_mode='anchor',transform_rotates_text=True)
 
-
+plt.ylim((0,3200))
 plt.grid('on', linestyle='--')
 plt.xlabel('Range (nmi)')
 plt.ylabel('Payload Weight (lbs)')

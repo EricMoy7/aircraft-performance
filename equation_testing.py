@@ -1,7 +1,7 @@
 import numpy as np
 
-W = 13000
-SREF = 200
+W = 13751-1200
+SREF = 250
 CLMAX = 2
 p = .002377
 
@@ -25,7 +25,7 @@ K = .04
 
 CL_g = u/(2*K)
 
-CD_g = .025 + .04 * CL_g**2
+CD_g = .025 + K * CL_g**2
 
 g = 31.174
 
@@ -34,4 +34,4 @@ A = g * ((Total_Static_Thrust/W)-u)
 B = g/W * (.5 * p * SREF * (CD_g - u*CL_g) + a)
 
 STO = 1/(2*B) * np.log(A/(A-B*V_TO**2))
-print(STO)
+print(1.2*V_stall)

@@ -26,7 +26,10 @@ for v in velocity:
     sp = speed(v,alt)
     M.append(sp.fMach())
 
+print((M[np.argmax(R)],R[np.argmax(R)]))
+
 plt.plot(M, R)
 plt.xlabel('Mach')
 plt.ylabel('Range (nmi)')
+plt.grid('on', linestyle='--')
 plt.show()

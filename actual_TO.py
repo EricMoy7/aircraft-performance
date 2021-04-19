@@ -7,7 +7,7 @@ CLMAX = 2.1
 p = .002377
 
 V_stall = np.sqrt(W/(.5*p*SREF*CLMAX))
-V_TO = np.linspace(120 , 180, 100)
+V_TO = 150
 
 POWER = 885
 PROP_EFF = .85
@@ -36,8 +36,5 @@ B = g/W * (.5 * p * SREF * (CD_g - u*CL_g) + a)
 
 STO = 1/(2*B) * np.log(A/(A-B*V_TO**2))
 
-plt.plot(V_TO, STO+775.72)
-
 d = V_TO**2/(2*32.2*(.05))
-plt.plot(V_TO, STO+d)
-plt.show()
+print(STO)

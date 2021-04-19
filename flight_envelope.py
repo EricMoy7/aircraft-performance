@@ -15,7 +15,6 @@ def f(v):
         req = p.fpower_reqhp()
         avail = p.fpower_availhp()
         if req-.5 <= avail <= req+.5  and req-avail >= 0:
-            print((req,avail))
             return alt
         else:
             alt += -1
@@ -26,6 +25,7 @@ def f(v):
 weight = 13000
 points = 400
 velocity = np.linspace(20,391,points)
+print(velocity)
 
 
 
@@ -37,10 +37,21 @@ if __name__ == '__main__':
 
         ind = np.argwhere(np.isnan(alt_array))
 
+        # altitudes = np.linspace(0,34000, 100)
+        # stall_array = []
+        # for alt in altitudes:
+        #     co = coefficients(100, alt, weight)
+        #     vstall = co.fVstall()
+        #     spe = speed(100,alt)
+        #     stall_array.append(spe.fMach(speed=vstall))
+
+        # print(stall_array)
+
         plt.plot(ar[0:66,0],ar[0:66,1], linestyle='dashed')
         plt.plot(ar[167:358,0],ar[167:358,1], linestyle='dashed')
         plt.hlines(34000, .220, .459, colors='red')
         plt.legend([r"Stall Speed", r"Top Speed",r"Max Altitude"])
+        plt.grid('on', linestyle='--')
         plt.xlabel('Mach')
         plt.ylabel('Altitude (ft)')
         plt.show()
