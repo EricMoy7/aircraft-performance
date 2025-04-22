@@ -109,3 +109,5 @@ pip install numpy matplotlib
     Similarly, run other scripts like `cruise.py`, `flight_envelope.py`, etc., as needed. Some scripts may generate plots or print results to the console.
 
 *Note: Some scripts might contain commented-out sections or require specific inputs/modifications to run specific analyses.*
+
+This project was created for AE442/AE443 Systems Design
