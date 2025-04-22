@@ -1,5 +1,8 @@
 # Aircraft Performance Analysis Toolkit
 
+## Final Report
+[Final Report](/honorable-mention-undergraduate-team-aircraft-university-of-illinois-urbana-champaign.pdf)
+
 ## Description
 
 This repository contains a collection of Python scripts designed for analyzing various aspects of aircraft performance. It utilizes a set of predefined aircraft parameters (aerodynamics, mass, propulsion, atmospheric conditions) to perform calculations related to cruise performance, payload-range capabilities, flight envelope, and more.
